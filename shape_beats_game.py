@@ -26,22 +26,17 @@ class ShapeBeatsGame():
         self.__FPS = config.FPS
         self.__clock = pg.time.Clock()
 
-        # Текущее значение очков игрока
-        self.__current_player_score = 0
-
         # Создаем объект класса GameDialog
         self.__game_dialog = GameDialog()
-
-        # Запрашиваем имя игрока
-        self.__player_name = self.__game_dialog.show_dialog_login()
-        print(self.__player_name)
-
-        self.__first_player_score = 0
 
         # Вызываем метод инициализациии остальных параметров
         self.__init_game()
 
     def __init_game(self):
+
+        # Текущее значение очков игрока
+        self.__current_player_score = 0
+
         # Создаем объект основного окна
         self.screen = pg.display.set_mode(game_config.WINDOW_SIZE)
         pg.display.set_caption("Shapes & Beats")
@@ -53,25 +48,18 @@ class ShapeBeatsGame():
         self.playerCube = Cube(self.screen)
         self.all_sprites.add(self.playerCube)
 
-        self.enemy_list = []
+        self.enemy_list = pg.sprite.Group()
         self.count_enemy = 2
 
         for i in range(self.count_enemy):
             # Объект противника
             enemy = Enemy(self.screen, self.playerCube.rect.centerx, self.playerCube.rect.centery)
-
-            self.enemy_list.append(enemy)
+            self.enemy_list.add(enemy)
             self.all_sprites.add(enemy)
-
 
     def __draw_scene(self):
         # отрисовка
         self.screen.blit(self.background, (0, 0))
-
-        # передвигаем противника вручную
-        for enemy in self.enemy_list:
-            enemy.move(self.playerCube.rect.centerx, self.playerCube.rect.centery)
-
 
         self.all_sprites.update()
         self.all_sprites.draw(self.screen)

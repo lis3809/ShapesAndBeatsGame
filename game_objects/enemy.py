@@ -22,10 +22,6 @@ class Enemy(pg.sprite.Sprite):
         self.image = load_img("picture/enemy.png")
         self.rect = self.image.get_rect()
 
-        self.respawn(player_x, player_y)
-
-    def respawn(self, player_x, player_y):
-
         self.direction = random.choice(["left_up", "left_down", "right_up", "right_down"])
         if (self.direction == "left_up"):
             self.rect.centerx = game_config.WINDOW_SIZE[0]
@@ -48,19 +44,9 @@ class Enemy(pg.sprite.Sprite):
         self.dx = game_config.speed * math.cos(self.angle)
         self.dy = game_config.speed * math.sin(self.angle)
 
-    def move(self, player_x, player_y):
+    def update(self):
         self.rect.x += self.dx
         self.rect.y += self.dy
-
-        if self.rect.left > game_config.WINDOW_SIZE[0]:
-            self.respawn(player_x, player_y)
-        if self.rect.right < 0:
-            self.respawn(player_x, player_y)
-
-        if self.rect.top > game_config.WINDOW_SIZE[1]:
-            self.respawn(player_x, player_y)
-        if self.rect.bottom < 0:
-            self.respawn(player_x, player_y)
 
     def draw(self):
         self.screen.blit(self.image, self.rect)
